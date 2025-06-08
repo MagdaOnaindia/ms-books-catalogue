@@ -4,7 +4,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import com.unir.products.controller.model.ProductDto;
+import com.unir.products.controller.model.BookDto;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -15,9 +15,9 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import com.unir.products.data.model.Product;
-import com.unir.products.controller.model.CreateProductRequest;
-import com.unir.products.service.ProductsService;
+import com.unir.products.data.model.Book;
+import com.unir.products.controller.model.CreateBookRequest;
+import com.unir.products.service.BooksService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -28,7 +28,7 @@ import lombok.extern.slf4j.Slf4j;
 @Tag(name = "Products Controller", description = "Microservicio encargado de exponer operaciones CRUD sobre productos alojados en una base de datos en memoria.")
 public class ProductsController {
 
-    private final ProductsService service;
+    private final BooksService service;
 
     @GetMapping("/products")
     @Operation(
@@ -37,8 +37,8 @@ public class ProductsController {
             summary = "Se devuelve una lista de todos los productos almacenados en la base de datos.")
     @ApiResponse(
             responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
-    public ResponseEntity<List<Product>> getProducts(
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
+    public ResponseEntity<List<Book>> getProducts(
             @RequestHeader Map<String, String> headers,
             @Parameter(name = "name", description = "Nombre del producto. No tiene por que ser exacto", example = "iPhone", required = false)
             @RequestParam(required = false) String name,
@@ -50,7 +50,7 @@ public class ProductsController {
             @RequestParam(required = false) Boolean visible) {
 
         log.info("headers: {}", headers);
-        List<Product> products = service.getProducts(name, country, description, visible);
+        List<Book> products = service.getProducts(name, country, description, visible);
 
         if (products != null) {
             return ResponseEntity.ok(products);
@@ -66,15 +66,15 @@ public class ProductsController {
             summary = "Se devuelve un producto a partir de su identificador.")
     @ApiResponse(
             responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
     @ApiResponse(
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "No se ha encontrado el producto con el identificador indicado.")
-    public ResponseEntity<Product> getProduct(@PathVariable String productId) {
+    public ResponseEntity<Book> getProduct(@PathVariable String productId) {
 
         log.info("Request received for product {}", productId);
-        Product product = service.getProduct(productId);
+        Book product = service.getProduct(productId);
 
         if (product != null) {
             return ResponseEntity.ok(product);
@@ -116,10 +116,10 @@ public class ProductsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos del producto a crear.",
                     required = true,
-                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateProductRequest.class))))
+                    content = @Content(mediaType = "application/json", schema = @Schema(implementation = CreateBookRequest.class))))
     @ApiResponse(
             responseCode = "201",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
     @ApiResponse(
             responseCode = "400",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
@@ -128,9 +128,9 @@ public class ProductsController {
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "No se ha encontrado el producto con el identificador indicado.")
-    public ResponseEntity<Product> addProduct(@RequestBody CreateProductRequest request) {
+    public ResponseEntity<Book> addProduct(@RequestBody CreateBookRequest request) {
 
-        Product createdProduct = service.createProduct(request);
+        Book createdProduct = service.createProduct(request);
 
         if (createdProduct != null) {
             return ResponseEntity.status(HttpStatus.CREATED).body(createdProduct);
@@ -151,14 +151,14 @@ public class ProductsController {
                     content = @Content(mediaType = "application/merge-patch+json", schema = @Schema(implementation = String.class))))
     @ApiResponse(
             responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
     @ApiResponse(
             responseCode = "400",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Producto inválido o datos incorrectos introducidos.")
-    public ResponseEntity<Product> patchProduct(@PathVariable String productId, @RequestBody String patchBody) {
+    public ResponseEntity<Book> patchProduct(@PathVariable String productId, @RequestBody String patchBody) {
 
-        Product patched = service.updateProduct(productId, patchBody);
+        Book patched = service.updateProduct(productId, patchBody);
         if (patched != null) {
             return ResponseEntity.ok(patched);
         } else {
@@ -175,17 +175,17 @@ public class ProductsController {
             requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "Datos del producto a actualizar.",
                     required = true,
-                    content = @Content(mediaType = "application/merge-patch+json", schema = @Schema(implementation = ProductDto.class))))
+                    content = @Content(mediaType = "application/merge-patch+json", schema = @Schema(implementation = BookDto.class))))
     @ApiResponse(
             responseCode = "200",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Product.class)))
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
     @ApiResponse(
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Producto no encontrado.")
-    public ResponseEntity<Product> updateProduct(@PathVariable String productId, @RequestBody ProductDto body) {
+    public ResponseEntity<Book> updateProduct(@PathVariable String productId, @RequestBody BookDto body) {
 
-        Product updated = service.updateProduct(productId, body);
+        Book updated = service.updateProduct(productId, body);
         if (updated != null) {
             return ResponseEntity.ok(updated);
         } else {
