@@ -72,7 +72,7 @@ public class BooksController {
         if (books != null) {
             return ResponseEntity.ok(books);
         } else {
-            return ResponseEntity.ok(Collections.emptyList());
+            return ResponseEntity.notFound().build();
         }
     }
 
