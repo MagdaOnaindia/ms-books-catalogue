@@ -123,6 +123,10 @@ public class BooksController {
             responseCode = "404",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "No se ha encontrado el libro con el identificador indicado.")
+    @ApiResponse(
+            responseCode = "409",
+            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
+            description = "Ya existe otro libro con ese ISBN.")
     public ResponseEntity<Book> addBook(@RequestBody CreateBookRequest request) {
 
         Book createdBook = service.createBook(request);
