@@ -41,30 +41,30 @@ public class BooksController {
     @ApiResponse(
             responseCode = "200",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
-    public ResponseEntity<List<Book>> getProducts(
-            @RequestHeader Map<String, String> headers,
-            @Parameter(name = "titulo", description = "Titulo del libro (puede ser parcialmente escrito)", example = "El abismo del olvido", required = false)
-            @RequestParam(required = false) String titulo,
-            @Parameter(name = "autor", description = "Autor del libro", example = "Michael", required = false)
-            @RequestParam(required = false) String autor,
-            @Parameter(name = "fechaDePublicacion", description = "F. Publicación", example = "2025", required = false)
-            @RequestParam(required = false) String fechaDePublicacion,
-            @Parameter(name = "editorial", description = "Editorial", example = "Planeta", required = false)
-            @RequestParam(required = false) String editorial),
-            @Parameter(name = "categoria", description = "Categoria / tipo de libro", example = "Romántica", required = false)
-            @RequestParam(required = false) String categoria),
-            @Parameter(name = "isbn", description = "ISBN", example = "9788408279797", required = false)
-            @RequestParam(required = false) Long isbn),
-            @Parameter(name = "sinopsis", description = "Sinopsis / Resumen", example = "Guerra civil", required = false)
-            @RequestParam(required = false) String sinopsis),
-            @Parameter(name = "valoracion", description = "Valoración de los lectores", example = "4", required = false)
-            @RequestParam(required = false) Double valoracion),
-            @Parameter(name = "visible", description = "Disponible (verdadero/falso)", example = "true", required = false)
-            @RequestParam(required = false) Boolean visible),
-            @Parameter(name = "stock", description = "En Stock / agotado", example = "true", required = false)
-            @RequestParam(required = false) Boolean stock),
-            @Parameter(name = "precio", description = "Precio (euros)", example = "20", required = false)
-            @RequestParam(required = false) Double precio)  {
+   public ResponseEntity<List<Book>> getProducts(
+                 @RequestHeader Map<String, String> headers,
+                 @Parameter(name = "titulo", description = "Titulo del libro (puede ser parcialmente escrito)", example = "El abismo del olvido", required = false)
+                 @RequestParam(required = false) String titulo,
+                 @Parameter(name = "autor", description = "Autor del libro", example = "Michael", required = false)
+                 @RequestParam(required = false) String autor,
+                 @Parameter(name = "fechaDePublicacion", description = "F. Publicación", example = "2025", required = false)
+                 @RequestParam(required = false) String fechaDePublicacion,
+                 @Parameter(name = "editorial", description = "Editorial", example = "Planeta", required = false)
+                 @RequestParam(required = false) String editorial,
+                 @Parameter(name = "categoria", description = "Categoria / tipo de libro", example = "Romántica", required = false)
+                 @RequestParam(required = false) String categoria,
+                 @Parameter(name = "isbn", description = "ISBN", example = "9788408279797", required = false)
+                 @RequestParam(required = false) Long isbn,
+                 @Parameter(name = "sinopsis", description = "Sinopsis / Resumen", example = "Guerra civil", required = false)
+                 @RequestParam(required = false) String sinopsis,
+                 @Parameter(name = "valoracion", description = "Valoración de los lectores", example = "4", required = false)
+                 @RequestParam(required = false) Double valoracion,
+                 @Parameter(name = "visible", description = "Disponible (verdadero/falso)", example = "true", required = false)
+                 @RequestParam(required = false) Boolean visible,
+                 @Parameter(name = "stock", description = "En Stock / agotado", example = "true", required = false)
+                 @RequestParam(required = false) Boolean stock,
+                 @Parameter(name = "precio", description = "Precio (euros)", example = "20", required = false)
+                 @RequestParam(required = false) Double precio) {
 
         log.info("headers: {}", headers);
         List<Book> books = service.getBooks(titulo, autor, fechaDePublicacion, editorial, categoria, isbn, sinopsis, valoracion, visible, stock, precio);

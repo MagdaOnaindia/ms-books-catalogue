@@ -33,7 +33,7 @@ INSERT INTO libros (id, titulo, autor, fecha_de_publicacion, editorial, categori
 INSERT INTO libros (id, titulo, autor, fecha_de_publicacion, editorial, categoria, ISBN, portada, sinopsis, valoracion, visible, stock, precio) VALUES
 (17, 'Las maravillas', 'Elena Medel', '2020-10-26', 'Anagrama', 'Narrativa social', 9788433999016, 'https://imagessl.casadellibro.com/a/l/t0/16/9788433999016.jpg', 'Historia de dos mujeres en busca de su lugar en un mundo desigual.', 4, true, true, 19.0);
 INSERT INTO libros (id, titulo, autor, fecha_de_publicacion, editorial, categoria, ISBN, portada, sinopsis, valoracion, visible, stock, precio) VALUES
-(18, 'Sira', 'María Dueñas', '2021-04-14', 'Planeta', 'Ficción histórica', 9788408249288, 'https://imagessl.casadellibro.com/a/l/t0/88/9788408249288.jpg', "Continuación de 'El tiempo entre costuras'. Sira afronta nuevos retos tras la guerra.", 4, true, true, 22.9);
+(18, 'Sira', 'María Dueñas', '2021-04-14', 'Planeta', 'Ficción histórica', 9788408249288, 'https://imagessl.casadellibro.com/a/l/t0/88/9788408249288.jpg', 'Continuación de ''El tiempo entre costuras''. Sira afronta nuevos retos tras la guerra.', 4, true, true, 22.9);
 INSERT INTO libros (id, titulo, autor, fecha_de_publicacion, editorial, categoria, ISBN, portada, sinopsis, valoracion, visible, stock, precio) VALUES
 (19, 'Reina roja', 'Juan Gómez-Jurado', '2018-11-08', 'Ediciones B', 'Thriller', 9788466664416, 'https://imagessl.casadellibro.com/a/l/t0/16/9788466664416.jpg', 'Antonia Scott es la persona más inteligente del planeta... y también la más peligrosa.', 4, true, true, 21.9);
 INSERT INTO libros (id, titulo, autor, fecha_de_publicacion, editorial, categoria, ISBN, portada, sinopsis, valoracion, visible, stock, precio) VALUES
