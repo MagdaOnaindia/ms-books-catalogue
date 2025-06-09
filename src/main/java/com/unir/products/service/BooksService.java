@@ -1,5 +1,6 @@
 package com.unir.products.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.unir.products.data.model.Book;
@@ -14,7 +15,7 @@ public interface BooksService {
 	
 	Boolean removeBook(String bookId);
 	
-	Book createBook(CreateBookRequest request);
+	ArrayList<Object> createBook(CreateBookRequest request);
 
 	Book updateBook(String bookId, String updateRequest);
 

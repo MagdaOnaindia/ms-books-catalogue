@@ -24,6 +24,10 @@ public class BookRepository {
     public Book getById(Long id) {
         return repository.findById(id).orElse(null);
     }
+    
+    public Book getByIsbn(Long isbn) {
+        return repository.findByIsbn(isbn);
+    }
 
     public Book save(Book book) {
         return repository.save(book);
