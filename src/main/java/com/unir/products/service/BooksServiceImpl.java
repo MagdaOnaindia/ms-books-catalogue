@@ -1,5 +1,8 @@
 package com.unir.products.service;
 
+import java.util.ArrayList;
+
+import com.unir.products.controller.model.ResponseCodes;
 import java.util.List;
 
 import com.unir.products.controller.model.BookSearchCriteria;
@@ -61,7 +64,9 @@ public class BooksServiceImpl implements BooksService {
 	}
 
 	@Override
-	public Book createBook(CreateBookRequest request) {
+	public ArrayList<Object> createBook(CreateBookRequest request) {
+		
+		ArrayList<Object> response = new ArrayList<Object>();
 
 		//Otra opcion: Jakarta Validation: https://www.baeldung.com/java-validation
 		if (request != null && StringUtils.hasLength(request.getTitulo().trim())
@@ -75,25 +80,43 @@ public class BooksServiceImpl implements BooksService {
 				&& request.getVisible() != null
 				&& request.getStock() != null
 				&& request.getPrecio() != null) {
+			
+			
+			//No se encuentra el libro con ISBN
+			if(repository.getByIsbn(request.getIsbn()) == null) {
+				
+				Book book = Book.builder()
+						.titulo(request.getTitulo())
+						.autor(request.getAutor())
+						.fechaDePublicacion(request.getFechaDePublicacion())
+						.editorial(request.getEditorial())
+						.categoria(request.getCategoria())
+						.isbn(request.getIsbn())
+						.portada(request.getPortada())
+						.sinopsis(request.getSinopsis())
+						.stock(request.getStock())
+						.visible(request.getVisible())
+						.precio(request.getPrecio())
+						.build();
+				
+				
+				response.add(repository.save(book));
+				response.add(ResponseCodes.OK);
+				
+			}
+			//El libro con ISBN existe
+			else {
+				response.add(null);
+				response.add(ResponseCodes.DUPLICATE);
+			}
 
-			Book book = Book.builder()
-					.titulo(request.getTitulo())
-					.autor(request.getAutor())
-					.fechaDePublicacion(request.getFechaDePublicacion())
-					.editorial(request.getEditorial())
-					.categoria(request.getCategoria())
-					.isbn(request.getIsbn())
-					.portada(request.getPortada())
-					.sinopsis(request.getSinopsis())
-					.stock(request.getStock())
-					.visible(request.getVisible())
-					.precio(request.getPrecio())
-					.build();
-
-			return repository.save(book);
+			
 		} else {
-			return null;
+			response.add(null);
+			response.add(ResponseCodes.BAD_REQUEST);
 		}
+		
+		return response;
 	}
 
 	@Override

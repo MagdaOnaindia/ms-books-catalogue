@@ -1,5 +1,8 @@
 package com.unir.products.controller;
 
+
+import java.util.ArrayList;
+import com.unir.products.controller.model.ResponseCodes;
 import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
@@ -14,6 +17,7 @@ import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -152,14 +156,25 @@ public class BooksController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Ya existe otro libro con ese ISBN.")
     public ResponseEntity<Book> addBook(@RequestBody CreateBookRequest request) {
-
-        Book createdBook = service.createBook(request);
-
-        if (createdBook != null) {
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
-        } else {
-            return ResponseEntity.badRequest().build();
+    	
+    	
+        ArrayList<Object> response = service.createBook(request);
+        ResponseCodes code = (ResponseCodes) response.getLast();
+        Book createdBook = (Book) response.getFirst();
+        
+        switch(code) {
+        
+        case ResponseCodes.OK:
+        	return ResponseEntity.status(HttpStatus.CREATED).body(createdBook);
+        case ResponseCodes.BAD_REQUEST:
+        	return ResponseEntity.badRequest().build();
+        case ResponseCodes.DUPLICATE:
+        	return ResponseEntity.status(HttpStatus.CONFLICT).build();
+        default:
+        	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
+        
+
     }
 
     /* Borramos un libro a partir de su identificador */
