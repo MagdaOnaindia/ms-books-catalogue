@@ -15,6 +15,8 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
+import java.time.LocalDate;
+
 @Entity
 @Table(name = "libros")
 @Getter
@@ -36,7 +38,7 @@ public class Book {
 	private String autor;
 	
 	@Column(name = Consts.FECHA_DE_PUBLICACION)
-	private String fechaDePublicacion;
+	private LocalDate fechaDePublicacion;
 	
 	@Column(name = Consts.EDITORIAL)
 	private String editorial;
@@ -45,7 +47,7 @@ public class Book {
 	private String categoria;
 	
 	@Column(name = Consts.ISBN)
-	private Long isbn;
+	private String isbn;
 	
 	@Column(name = Consts.PORTADA)
 	private String portada;
@@ -60,7 +62,7 @@ public class Book {
 	private Boolean visible;
 	
 	@Column(name = Consts.STOCK)
-	private Boolean stock;
+	private Integer stock;
 	
 	@Column(name = Consts.PRECIO)
 	private Double precio;

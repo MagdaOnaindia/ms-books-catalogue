@@ -1,12 +1,15 @@
 package com.unir.products.controller;
 
+
 import java.util.ArrayList;
 import com.unir.products.controller.model.ResponseCodes;
+import java.time.LocalDate;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
 import com.unir.products.controller.model.BookDto;
+import com.unir.products.controller.model.BookSearchCriteria;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -24,7 +27,7 @@ import com.unir.products.service.BooksService;
 
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
+import org.springframework.format.annotation.DateTimeFormat;
 @RestController
 @RequiredArgsConstructor
 @Slf4j
@@ -45,37 +48,63 @@ public class BooksController {
             responseCode = "200",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
    public ResponseEntity<List<Book>> getProducts(
-                 @RequestHeader Map<String, String> headers,
-                 @Parameter(name = "titulo", description = "Titulo del libro (puede ser parcialmente escrito)", example = "El abismo del olvido", required = false)
+            @RequestHeader Map<String, String> headers,
+            @Parameter(name = "titulo", description = "Titulo del libro (búsqueda parcial)", example = "El Quijote", required = false)
                  @RequestParam(required = false) String titulo,
-                 @Parameter(name = "autor", description = "Autor del libro", example = "Michael", required = false)
+
+            @Parameter(name = "autor", description = "Autor del libro (búsqueda parcial)", example = "Cervantes", required = false)
                  @RequestParam(required = false) String autor,
-                 @Parameter(name = "fechaDePublicacion", description = "F. Publicación", example = "2025", required = false)
-                 @RequestParam(required = false) String fechaDePublicacion,
-                 @Parameter(name = "editorial", description = "Editorial", example = "Planeta", required = false)
+
+            @Parameter(name = "fechaDePublicacionDesde", description = "Fecha de publicación mínima (formato YYYY-MM-DD)", example = "1600-01-01", required = false)
+                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionDesde,
+
+            @Parameter(name = "fechaDePublicacionHasta", description = "Fecha de publicación máxima (formato YYYY-MM-DD)", example = "2023-12-31", required = false)
+                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionHasta,
+
+            @Parameter(name = "editorial", description = "Editorial del libro (búsqueda parcial)", example = "Planeta", required = false)
                  @RequestParam(required = false) String editorial,
-                 @Parameter(name = "categoria", description = "Categoria / tipo de libro", example = "Romántica", required = false)
+
+            @Parameter(name = "categoria", description = "Categoría del libro (coincidencia exacta)", example = "Novela", required = false)
                  @RequestParam(required = false) String categoria,
-                 @Parameter(name = "isbn", description = "ISBN", example = "9788408279797", required = false)
-                 @RequestParam(required = false) Long isbn,
-                 @Parameter(name = "sinopsis", description = "Sinopsis / Resumen", example = "Guerra civil", required = false)
-                 @RequestParam(required = false) String sinopsis,
-                 @Parameter(name = "valoracion", description = "Valoración de los lectores", example = "4", required = false)
-                 @RequestParam(required = false) Double valoracion,
-                 @Parameter(name = "visible", description = "Disponible (verdadero/falso)", example = "true", required = false)
+
+            @Parameter(name = "isbn", description = "ISBN del libro (coincidencia exacta o parcial según la lógica del backend)", example = "978-8424117647", required = false)
+                 @RequestParam(required = false) String isbn,
+
+            @Parameter(name = "valoracionMin", description = "Valoración mínima del libro (ej. 1.0 a 5.0)", example = "4.0", required = false)
+                 @RequestParam(required = false) Double valoracionMin,
+
+            @Parameter(name = "visible", description = "Indica si el libro debe estar visible (true/false)", example = "true", required = false)
                  @RequestParam(required = false) Boolean visible,
-                 @Parameter(name = "stock", description = "En Stock / agotado", example = "true", required = false)
-                 @RequestParam(required = false) Boolean stock,
-                 @Parameter(name = "precio", description = "Precio (euros)", example = "20", required = false)
-                 @RequestParam(required = false) Double precio) {
+
+            @Parameter(name = "conStock", description = "Indica si se deben buscar libros con stock disponible (true para stock > 0)", example = "true", required = false)
+                 @RequestParam(required = false) Boolean conStock,
+
+            @Parameter(name = "precioMin", description = "Precio mínimo del libro", example = "10.50", required = false)
+                 @RequestParam(required = false) Double precioMin,
+
+            @Parameter(name = "precioMax", description = "Precio máximo del libro", example = "25.00", required = false)
+                 @RequestParam(required = false) Double precioMax) {
 
         log.info("headers: {}", headers);
-        List<Book> books = service.getBooks(titulo, autor, fechaDePublicacion, editorial, categoria, isbn, sinopsis, valoracion, visible, stock, precio);
+        BookSearchCriteria criteria = new BookSearchCriteria();
+        criteria.setTitulo(titulo);
+        criteria.setAutor(autor);
+        criteria.setFechaDePublicacionDesde(fechaDePublicacionDesde);
+        criteria.setFechaDePublicacionHasta(fechaDePublicacionHasta);
+        criteria.setEditorial(editorial);
+        criteria.setCategoria(categoria);
+        criteria.setIsbn(isbn);
+        criteria.setValoracionMin(valoracionMin);
+        criteria.setVisible(visible);
+        criteria.setConStock(conStock);
+        criteria.setPrecioMin(precioMin);
+        criteria.setPrecioMax(precioMax);
+        List<Book> books = service.getBooks(criteria);
 
         if (books != null) {
             return ResponseEntity.ok(books);
         } else {
-            return ResponseEntity.ok(Collections.emptyList());
+            return ResponseEntity.notFound().build();
         }
     }
 
@@ -122,10 +151,6 @@ public class BooksController {
             responseCode = "400",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
             description = "Datos incorrectos introducidos.")
-    @ApiResponse(
-            responseCode = "404",
-            content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
-            description = "No se ha encontrado el libro con el identificador indicado.")
     @ApiResponse(
             responseCode = "409",
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Void.class)),
