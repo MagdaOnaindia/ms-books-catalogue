@@ -26,7 +26,7 @@ public class BookRepository {
         return repository.findById(id).orElse(null);
     }
     
-    public Book getByIsbn(Long isbn) {
+    public Book getByIsbn(String isbn) {
         return repository.findByIsbn(isbn);
     }
 

@@ -18,6 +18,6 @@ interface BookJpaRepository extends JpaRepository<Book, Long>, JpaSpecificationE
 
 	List<Book> findByVisible(Boolean visible);
 	
-	Book findByIsbn(Long isbn);	
+	Book findByIsbn(String isbn);
 
 }
