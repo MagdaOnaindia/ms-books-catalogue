@@ -1,5 +1,6 @@
 package com.unir.products.data;
 
+import com.unir.products.controller.model.BookSearchCriteria;
 import com.unir.products.data.utils.Consts;
 import com.unir.products.data.utils.SearchCriteria;
 import com.unir.products.data.utils.SearchOperation;
@@ -33,51 +34,45 @@ public class BookRepository {
         repository.delete(book);
     }
 
-    public List<Book> search(String titulo, String autor, String fechaDePublicacion, String editorial, String categoria, Long isbn, String sinopsis, Double valoracion, Boolean visible, Boolean stock, Double precio) {
+    public List<Book> search(BookSearchCriteria criteria) {
         SearchCriteria<Book> spec = new SearchCriteria<>();
 
-        if (StringUtils.isNotBlank(titulo)) {
-            spec.add(new SearchStatement(Consts.TITULO, titulo, SearchOperation.MATCH));
+        if (StringUtils.isNotBlank(criteria.getTitulo())) {
+            spec.add(new SearchStatement(Consts.TITULO, criteria.getTitulo(), SearchOperation.MATCH));
         }
-        
-        if (StringUtils.isNotBlank(autor)) {
-            spec.add(new SearchStatement(Consts.AUTOR, autor, SearchOperation.MATCH));
+        if (StringUtils.isNotBlank(criteria.getAutor())) {
+            spec.add(new SearchStatement(Consts.AUTOR, criteria.getAutor(), SearchOperation.MATCH));
         }
-        
-        if (StringUtils.isNotBlank(fechaDePublicacion)) {
-            spec.add(new SearchStatement(Consts.FECHA_DE_PUBLICACION, fechaDePublicacion, SearchOperation.MATCH));
+        if (criteria.getFechaDePublicacionDesde() != null) {
+            spec.add(new SearchStatement(Consts.FECHA_DE_PUBLICACION, criteria.getFechaDePublicacionDesde(), SearchOperation.GREATER_THAN_EQUAL));
         }
-        
-        if (StringUtils.isNotBlank(editorial)) {
-            spec.add(new SearchStatement(Consts.EDITORIAL, editorial, SearchOperation.MATCH));
+        if (criteria.getFechaDePublicacionHasta() != null) {
+            spec.add(new SearchStatement(Consts.FECHA_DE_PUBLICACION, criteria.getFechaDePublicacionHasta(), SearchOperation.LESS_THAN_EQUAL));
         }
-        
-        if (StringUtils.isNotBlank(categoria)) {
-            spec.add(new SearchStatement(Consts.CATEGORIA,  categoria, SearchOperation.EQUAL));
+        if (StringUtils.isNotBlank(criteria.getEditorial())) {
+            spec.add(new SearchStatement(Consts.EDITORIAL, criteria.getEditorial(), SearchOperation.MATCH));
         }
-
-        if (isbn != null) {
-            spec.add(new SearchStatement(Consts.ISBN, isbn, SearchOperation.MATCH));
+        if (StringUtils.isNotBlank(criteria.getCategoria())) {
+            spec.add(new SearchStatement(Consts.CATEGORIA, criteria.getCategoria(), SearchOperation.EQUAL));
         }
-        
-        if (StringUtils.isNotBlank(sinopsis)) {
-            spec.add(new SearchStatement(Consts.SINOPSIS,  sinopsis, SearchOperation.MATCH));
+        if (StringUtils.isNotBlank(criteria.getIsbn())) {
+            spec.add(new SearchStatement(Consts.ISBN, criteria.getIsbn(), SearchOperation.EQUAL)); //también se pueden permitir búsquedas parciales con MATCH
         }
-        
-        if (valoracion != null) {
-            spec.add(new SearchStatement(Consts.VALORACION,  valoracion, SearchOperation.GREATER_THAN_EQUAL));
+        if (criteria.getValoracionMin() != null) {
+            spec.add(new SearchStatement(Consts.VALORACION, criteria.getValoracionMin(), SearchOperation.GREATER_THAN_EQUAL));
         }
-
-        if (visible != null) {
-            spec.add(new SearchStatement(Consts.VISIBLE, visible, SearchOperation.EQUAL));
+        if (criteria.getVisible() != null) {
+            spec.add(new SearchStatement(Consts.VISIBLE, criteria.getVisible(), SearchOperation.EQUAL));
         }
-        
-        if (stock != null) {
-            spec.add(new SearchStatement(Consts.STOCK, stock, SearchOperation.EQUAL));
+        if (criteria.getConStock() != null && criteria.getConStock()) {
+            //libros con stock > 0
+            spec.add(new SearchStatement(Consts.STOCK, 0, SearchOperation.GREATER_THAN));
         }
-        
-        if (precio != null) {
-            spec.add(new SearchStatement(Consts.PRECIO,  precio, SearchOperation.GREATER_THAN_EQUAL));
+        if (criteria.getPrecioMin() != null) {
+            spec.add(new SearchStatement(Consts.PRECIO, criteria.getPrecioMin(), SearchOperation.GREATER_THAN_EQUAL));
+        }
+        if (criteria.getPrecioMax() != null) {
+            spec.add(new SearchStatement(Consts.PRECIO, criteria.getPrecioMax(), SearchOperation.LESS_THAN_EQUAL));
         }
 
         return repository.findAll(spec);

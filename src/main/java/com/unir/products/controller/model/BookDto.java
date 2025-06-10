@@ -5,6 +5,8 @@ import com.unir.products.data.utils.Consts;
 import jakarta.persistence.Column;
 import lombok.*;
 
+import java.time.LocalDate;
+
 @Getter
 @Setter
 @AllArgsConstructor
@@ -17,13 +19,13 @@ public class BookDto {
 	
 	private String autor;
 	
-	private String fechaDePublicacion;
+	private LocalDate fechaDePublicacion;
 	
 	private String editorial;
 	
 	private String categoria;
 	
-	private Long isbn;
+	private String isbn;
 	
 	private String portada;
 	
@@ -33,7 +35,7 @@ public class BookDto {
 	
 	private Boolean visible;
 	
-	private Boolean stock;
+	private Integer stock;
 	
 	private Double precio;
 }

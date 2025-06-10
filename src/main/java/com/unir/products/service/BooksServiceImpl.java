@@ -2,6 +2,7 @@ package com.unir.products.service;
 
 import java.util.List;
 
+import com.unir.products.controller.model.BookSearchCriteria;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
@@ -19,6 +20,8 @@ import com.unir.products.data.model.Book;
 import lombok.val;
 import lombok.extern.slf4j.Slf4j;
 
+import static com.unir.products.service.utils.BookSearchUtils.criteriaAreNotEmpty;
+
 @Service
 @Slf4j
 public class BooksServiceImpl implements BooksService {
@@ -30,21 +33,9 @@ public class BooksServiceImpl implements BooksService {
 	private ObjectMapper objectMapper;
 
 	@Override
-	public List<Book> getBooks(String titulo, String autor, String fechaDePublicacion, String editorial, String categoria, Long isbn, String sinopsis, Double valoracion, Boolean visible, Boolean stock, Double precio) {
-
-		if (StringUtils.hasLength(titulo) 
-				|| StringUtils.hasLength(autor) 
-				|| StringUtils.hasLength(fechaDePublicacion)
-				|| StringUtils.hasLength(editorial)
-				|| StringUtils.hasLength(categoria)
-				|| isbn != null
-				|| StringUtils.hasLength(sinopsis)
-				|| valoracion != null
-				|| StringUtils.hasLength(fechaDePublicacion)
-				|| stock != null
-				|| visible != null
-				|| precio != null) {
-			return repository.search( titulo,  autor,  fechaDePublicacion,  editorial,  categoria,  isbn,  sinopsis,  valoracion,  visible,  stock,  precio);
+	public List<Book> getBooks(BookSearchCriteria criteria) {
+		if (criteriaAreNotEmpty(criteria)) {
+			return repository.search(criteria);
 		}
 
 		List<Book> books = repository.getBooks();
@@ -75,7 +66,7 @@ public class BooksServiceImpl implements BooksService {
 		//Otra opcion: Jakarta Validation: https://www.baeldung.com/java-validation
 		if (request != null && StringUtils.hasLength(request.getTitulo().trim())
 				&& StringUtils.hasLength(request.getAutor().trim())
-				&& StringUtils.hasLength(request.getFechaDePublicacion().trim()) 
+				&& request.getFechaDePublicacion() != null
 				&& StringUtils.hasLength(request.getEditorial().trim()) 
 				&& StringUtils.hasLength(request.getCategoria().trim()) 
 				&& request.getIsbn() != null 
