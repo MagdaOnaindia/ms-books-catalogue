@@ -71,7 +71,7 @@ public class BooksServiceImpl implements BooksService {
 		//Otra opcion: Jakarta Validation: https://www.baeldung.com/java-validation
 		if (request != null && StringUtils.hasLength(request.getTitulo().trim())
 				&& StringUtils.hasLength(request.getAutor().trim())
-				&& request.getFechaDePublicacion() != null
+				&& request.getFecha_de_publicacion() != null
 				&& StringUtils.hasLength(request.getEditorial().trim()) 
 				&& StringUtils.hasLength(request.getCategoria().trim()) 
 				&& request.getIsbn() != null 
@@ -89,7 +89,7 @@ public class BooksServiceImpl implements BooksService {
 						.titulo(request.getTitulo())
 						.autor(request.getAutor())
 /* 						.fechaDePublicacion(request.getFechaDePublicacion()) */
- 						.fecha_de_publicacion(request.getFechaDePublicacion())
+ 						.fecha_de_publicacion(request.getFecha_de_publicacion())
 						.editorial(request.getEditorial())
 						.categoria(request.getCategoria())
 						.isbn(request.getIsbn())

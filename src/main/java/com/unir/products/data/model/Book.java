@@ -74,7 +74,7 @@ public class Book {
 		this.titulo = bookDto.getTitulo();
 		this.autor = bookDto.getAutor();
 		/* this.fechaDePublicacion = bookDto.getFechaDePublicacion(); */
-		this.fecha_de_publicacion = bookDto.getFechaDePublicacion();
+		this.fecha_de_publicacion = bookDto.getFecha_de_publicacion();
 		this.editorial = bookDto.getEditorial();
 		this.categoria = bookDto.getCategoria();
 		this.isbn = bookDto.getIsbn();

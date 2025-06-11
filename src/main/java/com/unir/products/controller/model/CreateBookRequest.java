@@ -23,7 +23,7 @@ public class CreateBookRequest {
 	private String autor;
 
 	@NotNull(message = "La fecha de publicación es obligatoria")
-	private LocalDate fechaDePublicacion;
+	private LocalDate fecha_de_publicacion;
 
 	@NotBlank(message = "La editorial no puede estar vacía")
 	@Size(max = 100, message = "La editorial no puede exceder los 100 caracteres")
@@ -58,4 +58,11 @@ public class CreateBookRequest {
 	@NotNull(message = "El precio es obligatorio")
 	@DecimalMin(value = "0.0", inclusive = false, message = "El precio debe ser mayor que cero")
 	private Double precio;
+
+	/* Alberto */
+	/*
+	public LocalDate getFechaDePublicacion() {
+		 return fecha_de_publicacion;
+	}
+	*/
 }
