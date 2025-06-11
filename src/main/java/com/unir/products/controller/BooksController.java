@@ -56,7 +56,7 @@ public class BooksController {
                  @RequestParam(required = false) String autor,
 
             @Parameter(name = "fechaDePublicacionDesde", description = "Fecha de publicación mínima (formato YYYY-MM-DD)", example = "", required = false)
-                 @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionDesde,
+                @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionDesde,
 
             @Parameter(name = "fechaDePublicacionHasta", description = "Fecha de publicación máxima (formato YYYY-MM-DD)", example = "", required = false)
                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionHasta,
@@ -73,10 +73,10 @@ public class BooksController {
             @Parameter(name = "valoracionMin", description = "Valoración mínima del libro (ej. 1.0 a 5.0)", example = "", required = false)
                  @RequestParam(required = false) Double valoracionMin,
 
-            @Parameter(name = "visible", description = "Indica si el libro debe estar visible (true/false)", example = "true", required = false)
+            @Parameter(name = "visible", description = "Indica si el libro debe estar visible (true/false)", example = "", required = false)
                  @RequestParam(required = false) Boolean visible,
 
-            @Parameter(name = "conStock", description = "Indica si se deben buscar libros con stock disponible (true para stock > 0)", example = "true", required = false)
+            @Parameter(name = "conStock", description = "Indica si se deben buscar libros con stock disponible (true para stock > 0)", example = "", required = false)
                  @RequestParam(required = false) Boolean conStock,
 
             @Parameter(name = "precioMin", description = "Precio mínimo del libro", example = "", required = false)

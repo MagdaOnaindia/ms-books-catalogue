@@ -88,7 +88,8 @@ public class BooksServiceImpl implements BooksService {
 				Book book = Book.builder()
 						.titulo(request.getTitulo())
 						.autor(request.getAutor())
-						.fechaDePublicacion(request.getFechaDePublicacion())
+/* 						.fechaDePublicacion(request.getFechaDePublicacion()) */
+ 						.fecha_de_publicacion(request.getFechaDePublicacion())
 						.editorial(request.getEditorial())
 						.categoria(request.getCategoria())
 						.isbn(request.getIsbn())

@@ -38,8 +38,9 @@ public class Book {
 	private String autor;
 	
 	@Column(name = Consts.FECHA_DE_PUBLICACION)
-	private LocalDate fechaDePublicacion;
-	
+	/* private LocalDate fechaDePublicacion; */
+	private LocalDate fecha_de_publicacion;
+
 	@Column(name = Consts.EDITORIAL)
 	private String editorial;
 	
@@ -72,7 +73,8 @@ public class Book {
 		
 		this.titulo = bookDto.getTitulo();
 		this.autor = bookDto.getAutor();
-		this.fechaDePublicacion = bookDto.getFechaDePublicacion();
+		/* this.fechaDePublicacion = bookDto.getFechaDePublicacion(); */
+		this.fecha_de_publicacion = bookDto.getFechaDePublicacion();
 		this.editorial = bookDto.getEditorial();
 		this.categoria = bookDto.getCategoria();
 		this.isbn = bookDto.getIsbn();

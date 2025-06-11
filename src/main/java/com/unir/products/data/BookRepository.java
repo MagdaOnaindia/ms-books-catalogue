@@ -48,6 +48,7 @@ public class BookRepository {
             spec.add(new SearchStatement(Consts.AUTOR, criteria.getAutor(), SearchOperation.MATCH));
         }
         if (criteria.getFechaDePublicacionDesde() != null) {
+            /* Alberto: Yo creo que es aqui y luego revisarlo en utils/SearchCriteria */
             spec.add(new SearchStatement(Consts.FECHA_DE_PUBLICACION, criteria.getFechaDePublicacionDesde(), SearchOperation.GREATER_THAN_EQUAL));
         }
         if (criteria.getFechaDePublicacionHasta() != null) {
