@@ -49,28 +49,28 @@ public class BooksController {
             content = @Content(mediaType = "application/json", schema = @Schema(implementation = Book.class)))
    public ResponseEntity<List<Book>> getProducts(
             @RequestHeader Map<String, String> headers,
-            @Parameter(name = "titulo", description = "Titulo del libro (búsqueda parcial)", example = "El Quijote", required = false)
+            @Parameter(name = "titulo", description = "Titulo del libro (búsqueda parcial)", example = "", required = false)
                  @RequestParam(required = false) String titulo,
 
-            @Parameter(name = "autor", description = "Autor del libro (búsqueda parcial)", example = "Cervantes", required = false)
+            @Parameter(name = "autor", description = "Autor del libro (búsqueda parcial)", example = "", required = false)
                  @RequestParam(required = false) String autor,
 
-            @Parameter(name = "fechaDePublicacionDesde", description = "Fecha de publicación mínima (formato YYYY-MM-DD)", example = "1600-01-01", required = false)
+            @Parameter(name = "fechaDePublicacionDesde", description = "Fecha de publicación mínima (formato YYYY-MM-DD)", example = "", required = false)
                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionDesde,
 
-            @Parameter(name = "fechaDePublicacionHasta", description = "Fecha de publicación máxima (formato YYYY-MM-DD)", example = "2023-12-31", required = false)
+            @Parameter(name = "fechaDePublicacionHasta", description = "Fecha de publicación máxima (formato YYYY-MM-DD)", example = "", required = false)
                  @RequestParam(required = false) @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) LocalDate fechaDePublicacionHasta,
 
-            @Parameter(name = "editorial", description = "Editorial del libro (búsqueda parcial)", example = "Planeta", required = false)
+            @Parameter(name = "editorial", description = "Editorial del libro (búsqueda parcial)", example = "", required = false)
                  @RequestParam(required = false) String editorial,
 
-            @Parameter(name = "categoria", description = "Categoría del libro (coincidencia exacta)", example = "Novela", required = false)
+            @Parameter(name = "categoria", description = "Categoría del libro (coincidencia exacta)", example = "", required = false)
                  @RequestParam(required = false) String categoria,
 
-            @Parameter(name = "isbn", description = "ISBN del libro (coincidencia exacta o parcial según la lógica del backend)", example = "978-8424117647", required = false)
+            @Parameter(name = "isbn", description = "ISBN del libro (coincidencia exacta o parcial según la lógica del backend)", example = "", required = false)
                  @RequestParam(required = false) String isbn,
 
-            @Parameter(name = "valoracionMin", description = "Valoración mínima del libro (ej. 1.0 a 5.0)", example = "4.0", required = false)
+            @Parameter(name = "valoracionMin", description = "Valoración mínima del libro (ej. 1.0 a 5.0)", example = "", required = false)
                  @RequestParam(required = false) Double valoracionMin,
 
             @Parameter(name = "visible", description = "Indica si el libro debe estar visible (true/false)", example = "true", required = false)
@@ -79,10 +79,10 @@ public class BooksController {
             @Parameter(name = "conStock", description = "Indica si se deben buscar libros con stock disponible (true para stock > 0)", example = "true", required = false)
                  @RequestParam(required = false) Boolean conStock,
 
-            @Parameter(name = "precioMin", description = "Precio mínimo del libro", example = "10.50", required = false)
+            @Parameter(name = "precioMin", description = "Precio mínimo del libro", example = "", required = false)
                  @RequestParam(required = false) Double precioMin,
 
-            @Parameter(name = "precioMax", description = "Precio máximo del libro", example = "25.00", required = false)
+            @Parameter(name = "precioMax", description = "Precio máximo del libro", example = "", required = false)
                  @RequestParam(required = false) Double precioMax) {
 
         log.info("headers: {}", headers);
@@ -101,7 +101,7 @@ public class BooksController {
         criteria.setPrecioMax(precioMax);
         List<Book> books = service.getBooks(criteria);
 
-        if (books != null) {
+        if (books != null && !books.isEmpty()) {
             return ResponseEntity.ok(books);
         } else {
             return ResponseEntity.notFound().build();
