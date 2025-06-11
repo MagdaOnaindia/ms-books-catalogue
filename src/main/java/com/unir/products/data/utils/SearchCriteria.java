@@ -6,6 +6,7 @@ import jakarta.persistence.criteria.Predicate;
 import jakarta.persistence.criteria.Root;
 import org.springframework.data.jpa.domain.Specification;
 
+import java.time.LocalDate; // Asegúrate de tener este import
 import java.util.LinkedList;
 import java.util.List;
 
@@ -29,11 +30,23 @@ public class SearchCriteria<Product> implements Specification<Product> {
                 predicates.add(builder.lessThan(
                         root.get(criteria.getKey()), criteria.getValue().toString()));
             } else if (criteria.getOperation().equals(SearchOperation.GREATER_THAN_EQUAL)) {
-                predicates.add(builder.greaterThanOrEqualTo(
-                        root.get(criteria.getKey()), criteria.getValue().toString()));
+                if (criteria.getValue() instanceof LocalDate) { //Si el valor es LocalDate
+                    predicates.add(builder.greaterThanOrEqualTo(
+                            root.get(criteria.getKey()).as(LocalDate.class),
+                            (LocalDate) criteria.getValue()));
+                } else {
+                    predicates.add(builder.greaterThanOrEqualTo(
+                            root.get(criteria.getKey()), criteria.getValue().toString()));
+                }
             } else if (criteria.getOperation().equals(SearchOperation.LESS_THAN_EQUAL)) {
-                predicates.add(builder.lessThanOrEqualTo(
-                        root.get(criteria.getKey()), criteria.getValue().toString()));
+                if (criteria.getValue() instanceof LocalDate) { //Si el valor es LocalDate
+                    predicates.add(builder.lessThanOrEqualTo(
+                            root.get(criteria.getKey()).as(LocalDate.class),
+                            (LocalDate) criteria.getValue()));
+                } else {
+                    predicates.add(builder.lessThanOrEqualTo(
+                            root.get(criteria.getKey()), criteria.getValue().toString()));
+                }
             } else if (criteria.getOperation().equals(SearchOperation.NOT_EQUAL)) {
                 predicates.add(builder.notEqual(
                         root.get(criteria.getKey()), criteria.getValue()));
