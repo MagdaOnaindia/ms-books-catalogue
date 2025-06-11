@@ -37,7 +37,7 @@ public class BooksController {
     private final BooksService service;
 
     /* API REST para la busqueda de libros por varios criterios:
-       titulo, autor, fecha de publicación, editorial, categoria, isbn, sinopsis, valoración, disponible, en stock o precio.
+       titulo, autor, fecha de publicación, editorial, categoria, isbn, valoración, disponible, en stock o precio.
      */
     @GetMapping("/books")
     @Operation(
